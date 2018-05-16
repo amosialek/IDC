@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>IDC - describe image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="tools.js"></script>
+</head>
+<body>
+<h>Describe image using one word:</h>
+<br>
+<img th:src="@{/example.png}" />
+<br>
+<form name="description_form" action="/image_describe/1" method="post">
+<input name="image_description" type="text"/>
+<button type="submit">Commit!</button>
+</form>
+</body>
+
+
+</html>
