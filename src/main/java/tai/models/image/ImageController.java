@@ -26,4 +26,14 @@ public class ImageController {
     public Image update(Long id, @Valid @RequestBody ImageData imageData){
         return imageService.update(id, imageData);
     }
+
+    @DeleteMapping
+    public void delete(Long id){
+        imageService.delete(id);
+    }
+
+    @GetMapping
+    public Image get(Long id){
+        return imageService.get(id);
+    }
 }

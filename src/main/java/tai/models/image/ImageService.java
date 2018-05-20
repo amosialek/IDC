@@ -2,6 +2,8 @@ package tai.models.image;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tai.models.exceptions.ExistsException;
+import tai.models.exceptions.NotFoundException;
 import tai.models.image_tag.ImageTag;
 import tai.models.tags.Tag;
 import tai.models.tags.TagRepository;
@@ -37,8 +39,8 @@ public class ImageService {
         return imageRepository.findAll();
     }
 
-    public Image add(ImageData data) throws EntityExistsException {
-        if (findByLink(data.getImageLink()).isPresent()) throw new EntityExistsException();
+    public Image add(ImageData data) throws ExistsException {
+        if (findByLink(data.getImageLink()).isPresent()) throw new ExistsException();
         Image image = new Image();
         Set<ImageTag> tags = new HashSet<>();
         data.getTags().forEach(tag -> {
@@ -53,8 +55,8 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public Image update(Long id, ImageData data) throws EntityNotFoundException {
-        Image image = findById(id).orElseThrow(EntityNotFoundException::new);
+    public Image update(Long id, ImageData data) throws NotFoundException {
+        Image image = findById(id).orElseThrow(NotFoundException::new);
         Set<ImageTag> tags = new HashSet<>();
         data.getTags().forEach(tag -> {
             if (findByTag(tag).isPresent()) {
@@ -81,15 +83,15 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public void delete(Long id) throws EntityNotFoundException {
+    public void delete(Long id) throws NotFoundException {
         if (imageRepository.findById(id).isPresent()) {
             imageRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException();
+            throw new NotFoundException();
         }
     }
 
-    public Image get(Long id) throws EntityNotFoundException {
-        return findById(id).orElseThrow(EntityNotFoundException::new);
+    public Image get(Long id) throws NotFoundException {
+        return findById(id).orElseThrow(NotFoundException::new);
     }
 }

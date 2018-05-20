@@ -20,7 +20,7 @@ public class Image implements Serializable {
     @NotBlank
     private String imageLink;
 
-    @OneToMany(mappedBy = "imageTags")
+    @OneToMany
     private Set<ImageTag> imageTags = new HashSet<>();
 
     Image() {

@@ -7,8 +7,10 @@ import tai.models.image.Image;
 import tai.models.tags.Tag;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-public class ImageTag {
+@Entity
+public class ImageTag implements Serializable {
     @EmbeddedId
     private ImageTagPK id;
 
