@@ -1,6 +1,9 @@
 package tai.imgur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import tai.models.image.Image;
+import tai.models.image.ImageRepository;
+import tai.models.image.ImageService;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -12,6 +15,7 @@ public class ImgurAPI {
 
     private List<String >randomImagesURLs=null;
     Random random = new Random();
+    ImageService imageService;
 
     private String getRandomPageJson(Integer pageNumber){
         if (pageNumber<0 || pageNumber>50)
@@ -83,9 +87,13 @@ public class ImgurAPI {
             System.out.println(s+": "+jsonMap.get(s).getClass());
         }
         List<HashMap<String,Object>> data = (ArrayList<HashMap<String,Object>>)(jsonMap.get("data"));
+
+
         for (HashMap<String,Object> imageData:data) {
-            if(imageData.get("is_album")==(Boolean)false)
+            if(imageData.get("is_album")==(Boolean)false) {
                 randomImagesURLs.add(imageData.get("link").toString());
+
+            }
         }
         return randomImagesURLs;
     }

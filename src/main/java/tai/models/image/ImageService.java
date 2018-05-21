@@ -17,10 +17,12 @@ import java.util.*;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final TagRepository tagRepository;
+    private final Random random;
 
     public ImageService(ImageRepository imageRepository, TagRepository tagRepository) {
         this.imageRepository = imageRepository;
         this.tagRepository = tagRepository;
+        this.random=new Random();
     }
 
     public Optional<Image> findById(Long id) {
@@ -93,5 +95,21 @@ public class ImageService {
 
     public Image get(Long id) throws NotFoundException {
         return findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    public Image getRandom(){
+        long image_count = imageRepository.count();
+        if (image_count==0)
+            return null;
+        long random_index = Math.abs(random.nextLong()%image_count);
+        List<Image> images;
+        if(imageRepository.existsById(random_index))
+            return findById(random_index).orElseThrow(NotFoundException::new);
+        else {
+            images = imageRepository.findAll();
+            random_index = random.nextLong()%images.size();
+            random_index = Math.abs(random_index);
+            return images.get((int) random_index);
+        }
     }
 }

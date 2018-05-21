@@ -1,29 +1,31 @@
 package tai;
 
-import javafx.util.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import tai.imgur.ImgurAPI;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import tai.models.image.Image;
+import tai.models.image.ImageService;
 
 @Controller
 public class MainPageController {
 
-    ImgurAPI imgurAPI=new ImgurAPI();
+    private final ImageService imageService;
+
+    @Autowired
+    public MainPageController(ImageService imageService) {
+        this.imageService = imageService;
+    }
 
     @RequestMapping("/image_describe")
     public String image_describe(Model model) {
-        model.addAttribute("image_link",imgurAPI.getRandomImageURL());
+        Image image = imageService.getRandom();
+        if (image!=null)
+            model.addAttribute("image_link",image.getImageLink());
 
         return "image_describe";
     }
