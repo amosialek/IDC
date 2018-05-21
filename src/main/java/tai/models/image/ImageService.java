@@ -8,8 +8,6 @@ import tai.models.image_tag.ImageTag;
 import tai.models.tags.Tag;
 import tai.models.tags.TagRepository;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
@@ -93,5 +91,11 @@ public class ImageService {
 
     public Image get(Long id) throws NotFoundException {
         return findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    public Image getRandom() {
+        List<Image> imageSet = findAll();
+        Random random = new Random();
+        return imageSet.get(random.nextInt(imageSet.size()));
     }
 }
