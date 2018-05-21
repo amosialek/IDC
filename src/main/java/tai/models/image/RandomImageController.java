@@ -8,6 +8,7 @@ import tai.imgur.ImgurAPI;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/image/random")
 @Transactional

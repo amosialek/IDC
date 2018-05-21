@@ -59,8 +59,10 @@ public class ImageService {
 
     public Image update(Long id, ImageData data) throws NotFoundException {
         Image image = findById(id).orElseThrow(NotFoundException::new);
-        Set<ImageTag> tags = new HashSet<>();
-        data.getTags().forEach(tag -> {
+        Set<ImageTag> tags = image.getImageTags();
+        if (tags==null)
+            tags = new HashSet<>();
+        for(String tag:data.getTags()){
             if (findByTag(tag).isPresent()) {
                 //tag istnieje w bazie
                 boolean flag = true;
@@ -77,9 +79,14 @@ public class ImageService {
                 }
             } else {
                 //tag nie istnieje w bazie, zatem nie jest tez powiazany z obrazkiem
-                tags.add(new ImageTag(image, new Tag(tag)));
+                Tag tagObject = new Tag(tag);
+                tagRepository.save(tagObject);
+                System.out.println(findByTag(tag).isPresent());
+                tags.add(new ImageTag(image, tagObject));
+
             }
-        });
+        };
+
         image.setImageLink(data.getImageLink());
         image.setImageTags(tags);
         return imageRepository.save(image);

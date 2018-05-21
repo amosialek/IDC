@@ -24,7 +24,7 @@ public class Tag implements Serializable {
     @OneToMany(mappedBy = "image")
     private Set<ImageTag> tagImageTags = new HashSet<>();
 
-    Tag() {
+    public Tag() {
     }
 
     public Tag(@NotBlank String tagName) {
