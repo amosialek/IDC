@@ -9,7 +9,7 @@
 <body>
 <h>Describe image using one word:</h>
 <br>
-<img th:src="@{/example.png}" />
+<img th:src="${image_link}" />
 <br>
 <form name="description_form" action="/image_describe/1" method="post">
 <input name="image_description" type="text"/>

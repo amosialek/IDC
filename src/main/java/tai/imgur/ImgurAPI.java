@@ -6,12 +6,12 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ImgurAPI {
+
+    private List<String >randomImagesURLs=null;
+    Random random = new Random();
 
     private String getRandomPageJson(Integer pageNumber){
         if (pageNumber<0 || pageNumber>50)
@@ -75,15 +75,27 @@ public class ImgurAPI {
 
 
     public List<String> getRandomImagesURLs(){
+        if(randomImagesURLs!=null)
+            return randomImagesURLs;
+        randomImagesURLs=new ArrayList<String>();
         Map<String, Object> jsonMap = parseJSONResponse(getRandomPageJson(0));
         for (String s:jsonMap.keySet()) {
             System.out.println(s+": "+jsonMap.get(s).getClass());
         }
         List<HashMap<String,Object>> data = (ArrayList<HashMap<String,Object>>)(jsonMap.get("data"));
         for (HashMap<String,Object> imageData:data) {
-            System.out.println(imageData.get("link"));
+            if(imageData.get("is_album")==(Boolean)false)
+                randomImagesURLs.add(imageData.get("link").toString());
         }
-        return new ArrayList<String>();
+        return randomImagesURLs;
     }
 
+    public String getRandomImageURL() {
+        if(randomImagesURLs==null)
+            getRandomImagesURLs();
+        if(randomImagesURLs.size()==0)
+            return "";
+        int randomIndex = random.nextInt(randomImagesURLs.size());
+        return randomImagesURLs.get(randomIndex);
+    }
 }

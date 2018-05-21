@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import tai.imgur.ImgurAPI;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -18,10 +19,11 @@ import java.util.Set;
 @Controller
 public class MainPageController {
 
-    @RequestMapping("/image_describe")
-    public String image_describe() {
-        System.out.println("aaaa");
+    ImgurAPI imgurAPI=new ImgurAPI();
 
+    @RequestMapping("/image_describe")
+    public String image_describe(Model model) {
+        model.addAttribute("image_link",imgurAPI.getRandomImageURL());
 
         return "image_describe";
     }
@@ -30,7 +32,6 @@ public class MainPageController {
     @ResponseStatus(value = HttpStatus.OK)
     public void image_describe_get_desc(@RequestParam String description) {
         System.out.println(description);
-        System.out.println("bbbb");
 
     }
 }
