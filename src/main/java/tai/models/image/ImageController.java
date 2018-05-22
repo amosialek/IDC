@@ -18,22 +18,27 @@ public class ImageController {
     }
 
     @PutMapping
-    public Image add(@Valid @RequestBody ImageData imageData){
+    public Image add(@Valid @RequestBody ImageData imageData) {
         return imageService.add(imageData);
     }
 
     @PostMapping
-    public Image update(Long id, @Valid @RequestBody ImageData imageData){
+    public Image update(Long id, @Valid @RequestBody ImageData imageData) {
         return imageService.update(id, imageData);
     }
 
     @DeleteMapping
-    public void delete(Long id){
+    public void delete(Long id) {
         imageService.delete(id);
     }
 
     @GetMapping
-    public Image get(Long id){
+    public Image get(Long id) {
         return imageService.get(id);
+    }
+
+    @GetMapping
+    public Image get() {
+        return imageService.getRandom();
     }
 }

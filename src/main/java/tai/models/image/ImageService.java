@@ -1,5 +1,6 @@
 package tai.models.image;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tai.models.exceptions.ExistsException;
@@ -16,6 +17,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final TagRepository tagRepository;
 
+    @Autowired
     public ImageService(ImageRepository imageRepository, TagRepository tagRepository) {
         this.imageRepository = imageRepository;
         this.tagRepository = tagRepository;
