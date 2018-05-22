@@ -113,3 +113,8 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
+/.idea/
+/gradle/wrapper/gradle-wrapper.jar
+/gradlew
+/gradle/wrapper/gradle-wrapper.properties
+/gradlew.bat
