@@ -1,12 +1,33 @@
-$(document).ready(function() {
-    $('form').submit(function (evt) {
+function loadPicture(){
+$.ajax({
+        type: 'GET',
+        url: 'http://localhost:8888/image/random'
+        
+    }).done(function(response){
+        console.log('ok');
+	  id=response.id;
+	  imageLink=response.imageLink;
+	  $('img').attr("src",response.imageLink);
+    })
+    .fail(function(response){
+        console.log('fail');
+
+        });
+}
+
+function commitTag (evt) {
     evt.preventDefault(); //prevents the default action
     var formData = $('form').serialize();
     console.log(formData);
+    console.log(id);
     $.ajax({
         type: 'POST',
-        url: $('form').attr('action'),
-        data: {"description":formData}
+	  headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json' 
+	    },
+        url: $('form').attr('action')+"?id="+String(id),
+        data: '{"imageLink": "'+imageLink+'","tags": ["'+formData+'"]}'
     }).done(function(response){
         console.log('ok');
     })
@@ -15,5 +36,12 @@ $(document).ready(function() {
 
         });
 
-});
+}
+
+$(document).ready(function() {
+var id=-1;
+var imageLink="";
+
+    loadPicture();
+    $('form').submit(commitTag);
 });

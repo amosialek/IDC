@@ -1,6 +1,7 @@
 package tai.models.image_tag;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import tai.models.image.Image;
@@ -12,8 +13,9 @@ import java.io.Serializable;
 @Entity
 public class ImageTag implements Serializable {
     @EmbeddedId
-    private ImageTagPK id;
+    private ImageTagPK id=new ImageTagPK();
 
+    @JsonIgnore
     @ManyToOne
     @Cascade(value = CascadeType.ALL)
     @MapsId("imageId")
@@ -28,6 +30,8 @@ public class ImageTag implements Serializable {
 
     @Column(name = "COUNT")
     private Integer count;
+
+    public ImageTag(){}
 
     public ImageTag(Image image, Tag tag) {
         this.image = image;

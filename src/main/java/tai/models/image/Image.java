@@ -20,10 +20,10 @@ public class Image implements Serializable {
     @NotBlank
     private String imageLink;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private Set<ImageTag> imageTags = new HashSet<>();
 
-    Image() {
+    public Image() {
 
     }
 

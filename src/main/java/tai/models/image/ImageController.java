@@ -22,8 +22,10 @@ public class ImageController {
         return imageService.add(imageData);
     }
 
-    @PostMapping
+    @CrossOrigin
+    @PostMapping(consumes = {"application/json;charset=UTF-8"},produces = "application/json")
     public Image update(Long id, @Valid @RequestBody ImageData imageData){
+        System.out.println(imageData.getTags().get(0));
         return imageService.update(id, imageData);
     }
 

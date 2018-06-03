@@ -17,10 +17,12 @@ import java.util.*;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final TagRepository tagRepository;
+    private final Random random;
 
     public ImageService(ImageRepository imageRepository, TagRepository tagRepository) {
         this.imageRepository = imageRepository;
         this.tagRepository = tagRepository;
+        this.random=new Random();
     }
 
     public Optional<Image> findById(Long id) {
@@ -57,8 +59,10 @@ public class ImageService {
 
     public Image update(Long id, ImageData data) throws NotFoundException {
         Image image = findById(id).orElseThrow(NotFoundException::new);
-        Set<ImageTag> tags = new HashSet<>();
-        data.getTags().forEach(tag -> {
+        Set<ImageTag> tags = image.getImageTags();
+        if (tags==null)
+            tags = new HashSet<>();
+        for(String tag:data.getTags()){
             if (findByTag(tag).isPresent()) {
                 //tag istnieje w bazie
                 boolean flag = true;
@@ -75,9 +79,14 @@ public class ImageService {
                 }
             } else {
                 //tag nie istnieje w bazie, zatem nie jest tez powiazany z obrazkiem
-                tags.add(new ImageTag(image, new Tag(tag)));
+                Tag tagObject = new Tag(tag);
+                tagRepository.save(tagObject);
+                System.out.println(findByTag(tag).isPresent());
+                tags.add(new ImageTag(image, tagObject));
+
             }
-        });
+        };
+
         image.setImageLink(data.getImageLink());
         image.setImageTags(tags);
         return imageRepository.save(image);
@@ -93,5 +102,21 @@ public class ImageService {
 
     public Image get(Long id) throws NotFoundException {
         return findById(id).orElseThrow(NotFoundException::new);
+    }
+
+    public Image getRandom(){
+        long image_count = imageRepository.count();
+        if (image_count==0)
+            return null;
+        long random_index = Math.abs(random.nextLong()%image_count);
+        List<Image> images;
+        if(imageRepository.existsById(random_index))
+            return findById(random_index).orElseThrow(NotFoundException::new);
+        else {
+            images = imageRepository.findAll();
+            random_index = random.nextLong()%images.size();
+            random_index = Math.abs(random_index);
+            return images.get((int) random_index);
+        }
     }
 }
