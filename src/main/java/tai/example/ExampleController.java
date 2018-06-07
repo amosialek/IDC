@@ -1,17 +1,21 @@
 package tai.example;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/example")
+@Controller
 @Transactional
 public class ExampleController {
 
-    @GetMapping
-    public Long get() {
-        return 1L;
+    @RequestMapping("/example")
+    public String get() {
+        return "image_describe.html";
+    }
+    @RequestMapping("/signin")
+    public String signin() {
+        return "signIn.html";
     }
 }

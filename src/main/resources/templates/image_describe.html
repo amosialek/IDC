@@ -2,17 +2,19 @@
 <head>
     <title>IDC - describe image</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="sign_in.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="tools.js"></script>
 </head>
 <body>
 <h>Describe image using one word:</h>
 <br>
-<img src="http://127.0.0.1:8888/image/random"/>
+<img src="/image/random"/>
 <br>
-<form name="description_form" action="http://localhost:8888/image" method="post">
+<form name="description_form" action="/image" method="post">
 <input name="image_description" type="text"/>
 <button type="submit">Commit!</button>
+    <a href="#" onclick="signOut();">Sign out</a>
 </form>
 </body>
 

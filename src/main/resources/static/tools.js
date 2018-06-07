@@ -1,7 +1,7 @@
 function loadPicture(){
 $.ajax({
         type: 'GET',
-        url: 'http://localhost:8888/image/random'
+        url: '/image/random'
         
     }).done(function(response){
         console.log('ok');

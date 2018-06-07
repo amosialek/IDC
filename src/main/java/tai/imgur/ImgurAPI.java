@@ -1,6 +1,7 @@
 package tai.imgur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 import tai.models.image.Image;
 import tai.models.image.ImageRepository;
 import tai.models.image.ImageService;
@@ -11,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
+@Component
 public class ImgurAPI {
 
     private List<String >randomImagesURLs=null;
@@ -86,6 +88,7 @@ public class ImgurAPI {
         for (String s:jsonMap.keySet()) {
             System.out.println(s+": "+jsonMap.get(s).getClass());
         }
+        System.out.println(jsonMap.get("data"));
         List<HashMap<String,Object>> data = (ArrayList<HashMap<String,Object>>)(jsonMap.get("data"));
 
 
