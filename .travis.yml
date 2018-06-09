@@ -11,6 +11,6 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-install: true
+install: ./gradlew assemble --stacktrace
 
 script: ./gradlew clean build --refresh-dependencies --no-daemon
