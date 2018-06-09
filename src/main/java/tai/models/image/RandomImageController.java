@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tai.imgur.ImgurAPI;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -23,7 +22,7 @@ public class RandomImageController {
     }
     @GetMapping
     public Image get(){
-        return imageService.getRandom();
+        return imageService.getRandomImageFromDatabase();
     }
 
     @PutMapping

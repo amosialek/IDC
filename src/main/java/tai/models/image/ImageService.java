@@ -7,6 +7,8 @@ import tai.models.exceptions.NotFoundException;
 import tai.models.image_tag.ImageTag;
 import tai.models.tags.Tag;
 import tai.models.tags.TagRepository;
+import tai.models.user.User;
+import tai.models.user.UserRepository;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -17,28 +19,30 @@ import java.util.*;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final TagRepository tagRepository;
+    private final UserRepository userRepository;
     private final Random random;
 
-    public ImageService(ImageRepository imageRepository, TagRepository tagRepository) {
+    public ImageService(ImageRepository imageRepository, TagRepository tagRepository, UserRepository userRepository) {
         this.imageRepository = imageRepository;
         this.tagRepository = tagRepository;
-        this.random=new Random();
+        this.userRepository = userRepository;
+        this.random = new Random();
     }
 
-    public Optional<Image> findById(Long id) {
+    private Optional<Image> findById(Long id) {
         return imageRepository.findById(id);
     }
 
-    public Optional<Image> findByLink(String link) {
+    private Optional<Image> findByLink(String link) {
         return imageRepository.findByImageLink(link);
     }
 
-    public Optional<Tag> findByTag(String tag) {
+    private Optional<Tag> findByTag(String tag) {
         return tagRepository.findByTagName(tag);
     }
 
-    public List<Image> findAll() {
-        return imageRepository.findAll();
+    private Optional<User> findUserByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 
     public Image add(ImageData data) throws ExistsException {
@@ -57,12 +61,16 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public Image update(Long id, ImageData data) throws NotFoundException {
+    public Image update(Long id, ImageData data, String email) throws NotFoundException {
         Image image = findById(id).orElseThrow(NotFoundException::new);
+        //wyciagnij uzytkownika z bazy jesli istnieje, jesli nie istnieje - utworz
+        User user = findUserByEmail(email).orElseGet(() ->
+                userRepository.save(new User(email))
+        );
         Set<ImageTag> tags = image.getImageTags();
-        if (tags==null)
+        if (tags == null)
             tags = new HashSet<>();
-        for(String tag:data.getTags()){
+        for (String tag : data.getTags()) {
             if (findByTag(tag).isPresent()) {
                 //tag istnieje w bazie
                 boolean flag = true;
@@ -72,9 +80,10 @@ public class ImageService {
                         flag = false;
                         break;
                     }
+                    user.addImageTag(imageTag);
                 }
                 //tag istnieje w bazie, ale nie jest powiazany z obrazkiem
-                if(flag){
+                if (flag) {
                     tags.add(new ImageTag(image, findByTag(tag).get()));
                 }
             } else {
@@ -82,10 +91,11 @@ public class ImageService {
                 Tag tagObject = new Tag(tag);
                 tagRepository.save(tagObject);
                 System.out.println(findByTag(tag).isPresent());
-                tags.add(new ImageTag(image, tagObject));
-
+                ImageTag imageTag = new ImageTag(image, tagObject);
+                tags.add(imageTag);
+                user.addImageTag(imageTag);
             }
-        };
+        }
 
         image.setImageLink(data.getImageLink());
         image.setImageTags(tags);
@@ -93,7 +103,7 @@ public class ImageService {
     }
 
     public void delete(Long id) throws NotFoundException {
-        if (imageRepository.findById(id).isPresent()) {
+        if (findById(id).isPresent()) {
             imageRepository.deleteById(id);
         } else {
             throw new NotFoundException();
@@ -104,19 +114,12 @@ public class ImageService {
         return findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public Image getRandom(){
-        long image_count = imageRepository.count();
-        if (image_count==0)
-            return null;
-        long random_index = Math.abs(random.nextLong()%image_count);
-        List<Image> images;
-        if(imageRepository.existsById(random_index))
-            return findById(random_index).orElseThrow(NotFoundException::new);
-        else {
-            images = imageRepository.findAll();
-            random_index = random.nextLong()%images.size();
-            random_index = Math.abs(random_index);
-            return images.get((int) random_index);
-        }
+    public Image getRandomImageFromDatabase() {
+        List<Image> imageList = findAll();
+        return imageList.get(random.nextInt(imageList.size()));
+    }
+
+    private List<Image> findAll() {
+        return imageRepository.findAll();
     }
 }
