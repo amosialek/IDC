@@ -2,19 +2,41 @@
 <head>
     <title>IDC - describe image</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="sign_in.js"></script>
+    <meta name="google-signin-client_id" content=""/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <script src="sign_in.js"></script>
     <script src="tools.js"></script>
+    <link rel="stylesheet" type="text/css" href="custom_styles.css">
 </head>
+
+
+
 <body>
-<h>Describe image using one word:</h>
+<div >
+    <div class="g-signin2 topPanel" data-onsuccess="onSignIn">    </div>
+    <button type="button" class="btn btn-default btn-sm topPanel" onclick="signOut();">
+        <span class="glyphicon glyphicon-log-out"></span> Log out
+    </button>
+</div>
+<h1>Describe image using one word:</h1>
 <br>
-<img src="/image/random"/>
+    <div name="ImageDiv" class="photo">
+
+    </div>
+    <style type="text/css">
+
+    </style>
 <br>
 <form name="description_form" action="/image" method="post">
 <input name="image_description" type="text"/>
 <button type="submit">Commit!</button>
-    <a href="#" onclick="signOut();">Sign out</a>
+
 </form>
 </body>
 

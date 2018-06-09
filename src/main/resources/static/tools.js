@@ -4,10 +4,21 @@ $.ajax({
         url: '/image/random'
         
     }).done(function(response){
+        var img = new Image();
+        imageLink=response.imageLink;
+        img.onload = function(){
+            // code here to use the dimensions
+            scale = img.width/500;
+            newWidth = img.width/scale;
+            newHeight = img.height/scale;
+            img.width = newWidth;
+            img.height = newHeight;
+            document.getElementsByName("ImageDiv")[0].appendChild(img);
+        };
+        img.src = imageLink;
+
         console.log('ok');
 	  id=response.id;
-	  imageLink=response.imageLink;
-	  $('img').attr("src",response.imageLink);
     })
     .fail(function(response){
         console.log('fail');
@@ -24,7 +35,8 @@ function commitTag (evt) {
         type: 'POST',
 	  headers: { 
         'Accept': 'application/json',
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json',
+          'email':'TODO@gmail.com'
 	    },
         url: $('form').attr('action')+"?id="+String(id),
         data: '{"imageLink": "'+imageLink+'","tags": ["'+formData+'"]}'
@@ -37,6 +49,13 @@ function commitTag (evt) {
         });
 
 }
+
+
+
+
+
+
+
 
 $(document).ready(function() {
 var id=-1;
