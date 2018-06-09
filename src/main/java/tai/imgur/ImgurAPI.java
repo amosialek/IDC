@@ -1,6 +1,7 @@
 package tai.imgur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import tai.models.image.Image;
 import tai.models.image.ImageRepository;
@@ -11,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class ImgurAPI {
@@ -79,7 +81,7 @@ public class ImgurAPI {
         return result;
     }
 
-
+    @Scheduled(fixedRate = 7200000)
     public List<String> getRandomImagesURLs(){
         if(randomImagesURLs!=null)
             return randomImagesURLs;
