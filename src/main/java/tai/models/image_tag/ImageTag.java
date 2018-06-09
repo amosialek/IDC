@@ -6,14 +6,17 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import tai.models.image.Image;
 import tai.models.tags.Tag;
+import tai.models.user.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class ImageTag implements Serializable {
     @EmbeddedId
-    private ImageTagPK id=new ImageTagPK();
+    private ImageTagPK id = new ImageTagPK();
 
     @JsonIgnore
     @ManyToOne
@@ -28,10 +31,14 @@ public class ImageTag implements Serializable {
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
+    @ManyToMany(mappedBy = "imageTags")
+    private Set<User> userSet = new HashSet<>();
+
     @Column(name = "COUNT")
     private Integer count;
 
-    public ImageTag(){}
+    public ImageTag() {
+    }
 
     public ImageTag(Image image, Tag tag) {
         this.image = image;
@@ -69,5 +76,13 @@ public class ImageTag implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public Set<User> getUserSet() {
+        return userSet;
+    }
+
+    public void setUserSet(Set<User> userSet) {
+        this.userSet = userSet;
     }
 }

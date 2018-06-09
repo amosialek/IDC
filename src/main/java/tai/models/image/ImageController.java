@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 @RestController
 @RequestMapping("/image")
@@ -24,9 +25,9 @@ public class ImageController {
 
     @CrossOrigin
     @PostMapping(consumes = {"application/json;charset=UTF-8"},produces = "application/json")
-    public Image update(Long id, @Valid @RequestBody ImageData imageData){
+    public Image update(Long id, @Valid @RequestBody ImageData imageData, @Valid @RequestHeader @Email String email){
         System.out.println(imageData.getTags().get(0));
-        return imageService.update(id, imageData);
+        return imageService.update(id, imageData, email);
     }
 
     @DeleteMapping
