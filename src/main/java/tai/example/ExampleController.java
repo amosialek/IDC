@@ -14,7 +14,7 @@ public class ExampleController {
     public String get() {
         return "image_describe.html";
     }
-    @RequestMapping("/example2")
+    @RequestMapping("/download")
     public String downloadImages() {
         return "downloadImages.html";
     }
