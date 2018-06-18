@@ -1,5 +1,19 @@
 h1 {text-align: center;}
 div.topPanel {display:inline-block;}
 div.photo {text-align:center; }
+.navbar-nav > li > a, .navbar-brand {
+    padding-top:4px ;
+    padding-bottom:0 ;
+    height: 28px;
+
+}
+.bg-light {
+    background-color: #bbb !important;
+}
+
+.ml-auto{
+    float:right;
+}
+.navbar {min-height:28px ;}
 div.photo img { vertical-align:middle;}
 form {text-align: center;}

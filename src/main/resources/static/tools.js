@@ -13,7 +13,9 @@ $.ajax({
             newHeight = img.height/scale;
             img.width = newWidth;
             img.height = newHeight;
-            document.getElementsByName("ImageDiv")[0].appendChild(img);
+            var imageDiv =document.getElementsByName("ImageDiv")[0];
+            imageDiv.firstChild.remove();
+            imageDiv.appendChild(img);
         };
         img.src = imageLink;
 
