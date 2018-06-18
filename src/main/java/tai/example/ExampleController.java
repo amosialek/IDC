@@ -22,4 +22,8 @@ public class ExampleController {
     public String signin() {
         return "signIn.html";
     }
+    @RequestMapping("/profile")
+    public String profile() {
+        return "profile.html";
+    }
 }

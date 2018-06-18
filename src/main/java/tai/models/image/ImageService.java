@@ -119,6 +119,10 @@ public class ImageService {
         return imageList.get(random.nextInt(imageList.size()));
     }
 
+    public Tag getMostPopularTag(Image image){
+        return image.getImageTags().stream().max(Comparator.comparing(ImageTag::getCount)).get().getTag();
+    }
+
     private List<Image> findAll() {
         return imageRepository.findAll();
     }
