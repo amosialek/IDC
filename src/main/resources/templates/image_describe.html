@@ -12,6 +12,7 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="tools.js"></script>
     <script src="template.js"></script>
+    <script src="sign_in.js"></script>
     <link rel="stylesheet" type="text/css" href="custom_styles.css">
 </head>
 
@@ -19,7 +20,7 @@
 
 <body background="bg.png">
 <div class="navBar">Here navbar should be loaded</div>
-
+<div id="signin-button" class="g-signin2" data-onsuccess="onSignIn"></div>
 <!--<div >-->
     <!--<div class="g-signin2 topPanel" data-onsuccess="onSignIn">    </div>-->
     <!--<button type="button" class="btn btn-default btn-sm topPanel" onclick="signOut();">-->
