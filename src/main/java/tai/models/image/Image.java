@@ -27,6 +27,10 @@ public class Image implements Serializable {
 
     }
 
+    public Image(String imageLink){
+        setImageLink(imageLink);
+    }
+
     public long getId() {
         return id;
     }
