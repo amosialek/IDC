@@ -10,8 +10,6 @@ import tai.models.tags.TagRepository;
 import tai.models.user.User;
 import tai.models.user.UserRepository;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
@@ -42,7 +40,7 @@ public class ImageService {
     }
 
     private Optional<User> findUserByEmail(String email){
-        return userRepository.findByEmail(email);
+        return userRepository.findByToken(email);
     }
 
     public Image add(ImageData data) throws ExistsException {
@@ -61,7 +59,7 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public Image update(Long id, ImageData data, String email) throws NotFoundException {
+    public void update(Long id, ImageData data, String email) throws NotFoundException {
         Image image = findById(id).orElseThrow(NotFoundException::new);
         //wyciagnij uzytkownika z bazy jesli istnieje, jesli nie istnieje - utworz
         User user = findUserByEmail(email).orElseGet(() ->
@@ -99,7 +97,7 @@ public class ImageService {
 
         image.setImageLink(data.getImageLink());
         image.setImageTags(tags);
-        return imageRepository.save(image);
+        imageRepository.save(image);
     }
 
     public void delete(Long id) throws NotFoundException {

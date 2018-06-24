@@ -23,8 +23,8 @@ $.ajax({
 	  id=response.id;
     })
     .fail(function(response){
-        console.log('fail');
-
+        console.log('failed to load picture');
+        console.log(response);
         });
 }
 
@@ -38,7 +38,7 @@ function commitTag (evt) {
 	  headers: { 
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-          'email':'TODO@gmail.com'
+          'token': token
 	    },
         url: $('form').attr('action')+"?id="+String(id),
         data: '{"imageLink": "'+imageLink+'","tags": ["'+formData+'"]}'
@@ -46,8 +46,8 @@ function commitTag (evt) {
         console.log('ok');
     })
     .fail(function(response){
-        console.log('fail');
-
+        console.log('failed to post tag');
+        console.log(response)
         });
 
 }

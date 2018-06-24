@@ -5,7 +5,6 @@ function loadScore(){
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'email': 'TODO@gmail.com'
         }
     }).done(function(response){
         console.log(response);

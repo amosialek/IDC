@@ -3,7 +3,6 @@ package tai.models.user;
 import tai.models.image_tag.ImageTag;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -17,10 +16,9 @@ public class User implements Serializable {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "EMAIL")
+    @Column(name = "TOKEN")
     @NotBlank
-    @Email
-    private String email;
+    private String token;
 
     @ManyToMany
     private Set<ImageTag> imageTags = new HashSet<>();
@@ -28,8 +26,8 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(@Email String email){
-        this.email = email;
+    public User(String token){
+        this.token = token;
     }
 
     public Long getId() {
@@ -40,12 +38,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getToken() {
+        return token;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Set<ImageTag> getImageTags() {

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/profile/score")
@@ -22,8 +22,15 @@ public class UserController {
     }
 
     @GetMapping
-    public int get(@Valid @RequestHeader @Email String email){
-        return userService.getScore(email);
+    public int get(Principal principal){
+        try {
+
+            return userService.getScore(principal.getName());
+        }
+        catch (AuthenticationException e){
+            return -1;
+        }
+
     }
 
 

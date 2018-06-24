@@ -1,11 +1,14 @@
 package tai.models.image;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import tai.models.user.AuthenticationException;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/image")
@@ -25,9 +28,15 @@ public class ImageController {
 
     @CrossOrigin
     @PostMapping(consumes = {"application/json;charset=UTF-8"},produces = "application/json")
-    public Image update(Long id, @Valid @RequestBody ImageData imageData, @Valid @RequestHeader @Email String email){
+    public ResponseEntity update(Long id, @Valid @RequestBody ImageData imageData, Principal principal){
         System.out.println(imageData.getTags().get(0));
-        return imageService.update(id, imageData, email);
+        try {
+            imageService.update(id, imageData, principal.getName());
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        catch(AuthenticationException e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @DeleteMapping

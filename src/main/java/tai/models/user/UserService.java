@@ -4,18 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tai.models.exceptions.ExistsException;
 import tai.models.exceptions.NotFoundException;
-import tai.models.image.Image;
-import tai.models.image.ImageData;
 import tai.models.image.ImageRepository;
 import tai.models.image.ImageService;
 import tai.models.image_tag.ImageTag;
-import tai.models.tags.Tag;
 import tai.models.tags.TagRepository;
-import tai.models.user.User;
-import tai.models.user.UserRepository;
 
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
@@ -39,15 +32,15 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    private Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    private Optional<User> findByToken(String token) {
+        return userRepository.findByToken(token);
     }
 
-    public User add(String email) throws ExistsException {
-        if (findByEmail(email).isPresent()) throw new ExistsException();
+    public User add(String token) throws ExistsException {
+        if (findByToken(token).isPresent()) throw new ExistsException();
         User user = new User();
         Set<ImageTag> tags = new HashSet<>();
-        user.setEmail(email);
+        user.setToken(token);
         user.setImageTags(tags);
         return userRepository.save(user);
     }
@@ -64,10 +57,10 @@ public class UserService {
         return findById(id).orElseThrow(NotFoundException::new);
     }
 
-    public int getScore(String email) {
-        if(!findByEmail(email).isPresent())
+    public int getScore(String token) {
+        if(!findByToken(token).isPresent())
             throw new NotFoundException();
-        User user = findByEmail(email).get();
+        User user = findByToken(token).get();
         Set<ImageTag> imageTags = user.getImageTags();
         int score = 0;
         for (ImageTag imagetag:imageTags) {
