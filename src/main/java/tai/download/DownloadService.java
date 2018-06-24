@@ -24,25 +24,19 @@ public class DownloadService {
         this.userRepository = userRepository;
     }
 
-    private User findUserByEmail(@Email String email) throws NotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(NotFoundException::new);
+    private boolean doesUserExists(@Email String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 
-    private Map<String, Integer> findImagesByTag(String tagName) throws NotFoundException {
+    public Map<String, Integer> getImageLinksWithCounts(String tagName, @Email String email) throws NotFoundException,
+            OperationForbiddenException {
+        if (!doesUserExists(email)) throw new OperationForbiddenException();
         Tag tag = tagRepository.findByTagName(tagName).orElseThrow(NotFoundException::new);
         Map<String, Integer> resultImages = new HashMap<>();
-        tag.getImageTags().stream().filter(imageTag -> imageTag.getCount() > 0).forEach(imageTag -> resultImages.put(imageTag.getImage().getImageLink(),
-                imageTag.getCount()));
+        tag.getImageTags().stream().filter(imageTag -> imageTag.getCount() > 0)
+                .forEach(imageTag -> resultImages.put(imageTag.getImage().getImageLink(),
+                        imageTag.getCount()));
         return resultImages;
-    }
-
-    public Map<String, Integer> getImageLinksWithCounts(String tagName, String email) throws NotFoundException, OperationForbiddenException {
-        try {
-            findUserByEmail(email);
-        } catch (NotFoundException e) {
-            throw new OperationForbiddenException();
-        }
-        return findImagesByTag(tagName);
     }
 
 }

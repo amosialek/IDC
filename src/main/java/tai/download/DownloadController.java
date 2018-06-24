@@ -17,9 +17,8 @@ public class DownloadController {
         this.downloadService = downloadService;
     }
 
-    @GetMapping
-    public Map<String, Integer> get(@Valid @RequestHeader @Email String email, @Valid @RequestParam String tagName) {
-        //TODO: przerobic na lepszego JSONa
+    @GetMapping(produces = "application/json")
+    public Map<String, Integer> get(@Valid @RequestHeader @Email String email, @Valid @RequestParam("tag") String tagName) {
         return downloadService.getImageLinksWithCounts(tagName, email);
     }
 }
