@@ -43,16 +43,16 @@ public class DownloadTests {
         this.image = imageService.add(imageData);
         String[] stringList = {"tag1", "tag2"};
         imageData.setTags(Arrays.asList(stringList));
-        this.image = imageService.update(image.getId(), imageData, "mail@mail.com");
+        imageService.update(image.getId(), imageData, "mail@mail.com");
         UserRepository userRepository = (UserRepository) ReflectionTestUtils.getField(imageService, "userRepository");
-        this.user = userRepository.findByEmail("mail@mail.com").get();
-        this.user.setEmail("mail@mail.com");
+        this.user = userRepository.findByToken("mail@mail.com").get();
+        this.user.setToken("mail@mail.com");
     }
 
     @Test
     @Rollback
     public void testDownloadSuccessful() {
-        Map<String, Integer> map = downloadService.getImageLinksWithCounts("tag1", user.getEmail());
+        Map<String, Integer> map = downloadService.getImageLinksWithCounts("tag1", user.getToken());
         Map<String, Integer> correctMap = new HashMap<>();
         correctMap.put("tag1", 1);
         System.out.println(imageService.get(image.getId()).getImageLink());

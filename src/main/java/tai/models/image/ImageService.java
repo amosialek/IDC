@@ -10,6 +10,7 @@ import tai.models.tags.TagRepository;
 import tai.models.user.User;
 import tai.models.user.UserRepository;
 
+import java.security.Principal;
 import java.util.*;
 
 @Service
@@ -39,8 +40,8 @@ public class ImageService {
         return tagRepository.findByTagName(tag);
     }
 
-    private Optional<User> findUserByEmail(String email){
-        return userRepository.findByToken(email);
+    private Optional<User> findUserByToken(String token){
+        return userRepository.findByToken(token);
     }
 
     public Image add(ImageData data) throws ExistsException {
@@ -59,11 +60,11 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
-    public void update(Long id, ImageData data, String email) throws NotFoundException {
+    public void update(Long id, ImageData data, String principalName) throws NotFoundException {
         Image image = findById(id).orElseThrow(NotFoundException::new);
         //wyciagnij uzytkownika z bazy jesli istnieje, jesli nie istnieje - utworz
-        User user = findUserByEmail(email).orElseGet(() ->
-                userRepository.save(new User(email))
+        User user = findUserByToken(principalName).orElseGet(() ->
+                userRepository.save(new User(principalName))
         );
         Set<ImageTag> tags = image.getImageTags();
         if (tags == null)

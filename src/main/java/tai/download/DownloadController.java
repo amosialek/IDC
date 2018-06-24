@@ -4,7 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
+import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -18,7 +18,7 @@ public class DownloadController {
     }
 
     @GetMapping(produces = "application/json")
-    public Map<String, Integer> get(@Valid @RequestHeader @Email String email, @Valid @RequestParam("tag") String tagName) {
-        return downloadService.getImageLinksWithCounts(tagName, email);
+    public Map<String, Integer> get(@Valid @RequestHeader Principal principal, @Valid @RequestParam("tag") String tagName) {
+        return downloadService.getImageLinksWithCounts(tagName, principal.getName());
     }
 }

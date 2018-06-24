@@ -9,7 +9,6 @@ import tai.models.tags.TagRepository;
 import tai.models.user.User;
 import tai.models.user.UserRepository;
 
-import javax.validation.constraints.Email;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +23,13 @@ public class DownloadService {
         this.userRepository = userRepository;
     }
 
-    private boolean doesUserExists(@Email String email) {
-        return userRepository.findByEmail(email).isPresent();
+    private boolean doesUserExists(String principalName) {
+        return userRepository.findByToken(principalName).isPresent();
     }
 
-    public Map<String, Integer> getImageLinksWithCounts(String tagName, @Email String email) throws NotFoundException,
+    public Map<String, Integer> getImageLinksWithCounts(String tagName, String principalName) throws NotFoundException,
             OperationForbiddenException {
-        if (!doesUserExists(email)) throw new OperationForbiddenException();
+        if (!doesUserExists(principalName)) throw new OperationForbiddenException();
         Tag tag = tagRepository.findByTagName(tagName).orElseThrow(NotFoundException::new);
         Map<String, Integer> resultImages = new HashMap<>();
         tag.getImageTags().stream().filter(imageTag -> imageTag.getCount() > 0)
