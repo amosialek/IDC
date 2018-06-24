@@ -14,12 +14,16 @@ public class ExampleController {
     public String get() {
         return "image_describe.html";
     }
-    @RequestMapping("/example2")
+    @RequestMapping("/download")
     public String downloadImages() {
         return "downloadImages.html";
     }
     @RequestMapping("/signin")
     public String signin() {
         return "signIn.html";
+    }
+    @RequestMapping("/profile")
+    public String profile() {
+        return "profile.html";
     }
 }
