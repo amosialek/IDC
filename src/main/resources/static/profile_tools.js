@@ -4,7 +4,7 @@ function loadScore(){
         url: '/profile/score',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         }
     }).done(function(response){
         console.log(response);
@@ -13,7 +13,7 @@ function loadScore(){
         console.log('ok');
 
     })
-        .fail(function(response){
+        .fail(function(){
             console.log('fail');
 
         });

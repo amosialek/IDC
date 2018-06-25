@@ -1,3 +1,5 @@
+var imageLink="";
+var id=-1;
 function loadPicture(){
 $.ajax({
         type: 'GET',
@@ -8,9 +10,9 @@ $.ajax({
         imageLink=response.imageLink;
         img.onload = function(){
             // code here to use the dimensions
-            scale = img.width/500;
-            newWidth = img.width/scale;
-            newHeight = img.height/scale;
+            var scale = img.width/500;
+            var newWidth = img.width/scale;
+            var newHeight = img.height/scale;
             img.width = newWidth;
             img.height = newHeight;
             var imageDiv =document.getElementsByName("ImageDiv")[0];
@@ -30,19 +32,19 @@ $.ajax({
 
 function commitTag (evt) {
     evt.preventDefault(); //prevents the default action
-    var formData = $('form').serialize();
+    var form = $('form');
+    var formData = form.serialize();
     console.log(formData);
     console.log(id);
     $.ajax({
         type: 'POST',
 	  headers: { 
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-          'token': token
+        'Content-Type': 'application/json'
 	    },
-        url: $('form').attr('action')+"?id="+String(id),
-        data: '{"imageLink": "'+imageLink+'","tags": ["'+formData+'"]}'
-    }).done(function(response){
+        url: form.attr('action')+"?id="+String(id),
+        data: '{"imageLink": "'+imageLink+'","tags": ["'+formData.replace("image_description=","")+'"]}'
+    }).done(function(){
         console.log('ok');
     })
     .fail(function(response){
@@ -60,8 +62,8 @@ function commitTag (evt) {
 
 
 $(document).ready(function() {
-var id=-1;
-var imageLink="";
+id=-1;
+imageLink="";
 
     loadPicture();
     $('form').submit(commitTag);

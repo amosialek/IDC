@@ -1,10 +1,13 @@
 package tai.main;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
+
+import static org.springframework.security.core.context.ReactiveSecurityContextHolder.clearContext;
 
 @Controller
 @Transactional
@@ -23,5 +26,6 @@ public class MainController {
         return "profile.html";
     }
     @RequestMapping("/logout")
-    public String logout(){logout();return "ok";}
+    public String logout(){
+        clearContext();return "ok";}
 }

@@ -3,23 +3,18 @@ package tai.imgur;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import tai.models.image.Image;
-import tai.models.image.ImageRepository;
-import tai.models.image.ImageService;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Component
 public class ImgurAPI {
 
     private List<String >randomImagesURLs=null;
-    Random random = new Random();
-    ImageService imageService;
+    private final Random random = new Random();
 
     private String getRandomPageJson(Integer pageNumber){
         if (pageNumber<0 || pageNumber>50)
@@ -28,15 +23,13 @@ public class ImgurAPI {
 
         try {
             url = new URL("https://api.imgur.com/3/gallery/random/random/"+pageNumber.toString()+"?"+new Credentials(new FileInputStream("imgur_credentials.txt")).getCredentialsAsURLParameters());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         HttpURLConnection con = null;
         try {
-            con = (HttpURLConnection) url.openConnection();
+            con = (HttpURLConnection) (url != null ? url.openConnection() : null);
 
 
             con.setRequestMethod("GET");
@@ -48,7 +41,7 @@ public class ImgurAPI {
             InputStream is = con.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
             String line;
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 response.append(line);
                 response.append('\r');
@@ -85,7 +78,7 @@ public class ImgurAPI {
     public List<String> getRandomImagesURLs(){
         if(randomImagesURLs!=null)
             return randomImagesURLs;
-        randomImagesURLs=new ArrayList<String>();
+        randomImagesURLs= new ArrayList<>();
         Map<String, Object> jsonMap = parseJSONResponse(getRandomPageJson(0));
         for (String s:jsonMap.keySet()) {
             System.out.println(s+": "+jsonMap.get(s).getClass());
@@ -103,12 +96,4 @@ public class ImgurAPI {
         return randomImagesURLs;
     }
 
-    public String getRandomImageURL() {
-        if(randomImagesURLs==null)
-            getRandomImagesURLs();
-        if(randomImagesURLs.size()==0)
-            return "";
-        int randomIndex = random.nextInt(randomImagesURLs.size());
-        return randomImagesURLs.get(randomIndex);
-    }
 }

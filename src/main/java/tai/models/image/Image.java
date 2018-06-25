@@ -1,7 +1,6 @@
 package tai.models.image;
 
 import tai.models.image_tag.ImageTag;
-import tai.models.tags.Tag;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

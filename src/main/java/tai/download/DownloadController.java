@@ -8,7 +8,7 @@ import java.security.Principal;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/download")
+@RequestMapping("/download2")
 @Transactional
 public class DownloadController {
     private final DownloadService downloadService;
@@ -18,7 +18,7 @@ public class DownloadController {
     }
 
     @GetMapping(produces = "application/json")
-    public Map<String, Integer> get(@Valid @RequestHeader Principal principal, @Valid @RequestParam("tag") String tagName) {
+    public Map<String, Integer> get(Principal principal, @Valid @RequestParam("tag") String tagName) {
         return downloadService.getImageLinksWithCounts(tagName, principal.getName());
     }
 }

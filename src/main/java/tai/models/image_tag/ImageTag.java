@@ -31,6 +31,7 @@ public class ImageTag implements Serializable {
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "imageTags")
     private Set<User> userSet = new HashSet<>();
 

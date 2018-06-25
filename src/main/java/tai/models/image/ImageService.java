@@ -10,7 +10,6 @@ import tai.models.tags.TagRepository;
 import tai.models.user.User;
 import tai.models.user.UserRepository;
 
-import java.security.Principal;
 import java.util.*;
 
 @Service

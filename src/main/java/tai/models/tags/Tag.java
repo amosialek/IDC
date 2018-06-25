@@ -1,6 +1,5 @@
 package tai.models.tags;
 
-import tai.models.image.Image;
 import tai.models.image_tag.ImageTag;
 
 import javax.persistence.*;

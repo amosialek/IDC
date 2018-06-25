@@ -10,7 +10,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
-import tai.download.DownloadController;
 import tai.download.DownloadService;
 import tai.models.image.Image;
 import tai.models.image.ImageData;
@@ -23,7 +22,6 @@ import tai.models.user.UserRepository;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)

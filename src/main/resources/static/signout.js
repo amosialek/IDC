@@ -2,7 +2,7 @@ function signOut(){
     $.ajax({
         type: 'GET',
         url: '/logout'
-    }).done(function(response){
+    }).done(function(){
         console.log("ok");
         window.location.replace("/describe")
     })

@@ -65,8 +65,10 @@ public class UserService {
         int score = 0;
         for (ImageTag imagetag:imageTags) {
             if(imagetag.getTag().equals(imageService.getMostPopularTag(imagetag.getImage())))
+                System.out.println("image "+imagetag.getImage().getId());
                 score++;
         }
+        System.out.println("score: "+score+" "+ token);
         return score;
     }
 

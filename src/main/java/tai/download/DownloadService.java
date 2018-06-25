@@ -6,7 +6,6 @@ import tai.models.exceptions.NotFoundException;
 import tai.models.exceptions.OperationForbiddenException;
 import tai.models.tags.Tag;
 import tai.models.tags.TagRepository;
-import tai.models.user.User;
 import tai.models.user.UserRepository;
 
 import java.util.HashMap;

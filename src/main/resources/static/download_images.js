@@ -4,19 +4,16 @@ function downloadPicture(evt){
     console.log(formData.split('%20'));
     $.ajax({
         type: 'GET',
-        url: '/dataset',
+        url: '/download2',
         data: {
-            tags:formData.split(' ')
+            tag:formData.split(' ')[0].replace("tags=","")
         }
 
     }).done(function(response){
-        console.log("ok");
-        img.src = imageLink;
-
         console.log('ok');
-        id=response.id;
+        console.log(response.getJSON());
     })
-        .fail(function(response){
+        .fail(function(){
             console.log('failed ajax for downloadImages');
 
         });
