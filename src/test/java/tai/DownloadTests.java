@@ -24,9 +24,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@Transactional
 public class DownloadTests {
     /*@Autowired
     private DownloadService downloadService;
